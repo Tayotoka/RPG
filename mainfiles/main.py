@@ -48,7 +48,7 @@ def mainGame():
 
         else:  # this is the battle loop starting point
 
-            newMob = random.choice(monsters) # picks random monster
+            newMob = random.choice(monsters)  # picks random monster
 
             print(f'\n{newMob.name} has appeared!!\n')
 
