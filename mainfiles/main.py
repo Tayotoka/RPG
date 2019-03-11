@@ -12,10 +12,10 @@ def mainGame():
     """
     monsters = [mob('Slime', [10, 3, 2]), mob('Goblin', [12, 4, 1]),
                 mob('Earth Elemental', [15, 4, 2])]
-    cont = 'y'  # start menu option
+
     game = 'y'  # game option
 
-    while cont.lower() == 'y':
+    while True:
         print('welcome! what would you like to do?\n \nStart \nLoad \nQuit \n')
 
         options = input()

@@ -96,6 +96,8 @@ def purchase(*items):
 
 print(backpack[gold].quantity)
 
-purchase(sword, potion)
+purchase(sword, sword, potion, potion)
 
 print(backpack[gold].quantity)
+
+print(len(backpack))
