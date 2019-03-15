@@ -1,7 +1,9 @@
 """
 Text based RPG, battle random monsters.
 """
-from charmob import player, mob, potion, battle
+from charmob import (Player, Mob, Potion, battle,
+                     creatures, mobSpawn)
+
 import random
 
 
@@ -10,11 +12,6 @@ def mainGame():
     """
     Main game application
     """
-    monsters = [mob('Slime', [10, 3, 2]), mob('Goblin', [12, 4, 1]),
-                mob('Earth Elemental', [15, 4, 2])]
-
-    game = 'y'  # game option
-
     while True:
         print('welcome! what would you like to do?\n \nStart \nLoad \nQuit \n')
 
@@ -31,12 +28,12 @@ def mainGame():
 
     userName = input('\nWhat is your username?: ')
 
-    hero = player(userName, 15, 10, [15, 5, 2], 50)
-    # name, mainHp, mainMp, [hp, atk, def], money
+    hero = Player(userName, 1, 15, 10, 15, 10, 5, 2, 3, 3, 10, 50, 0)
+    # name, mainHp, mainMp, hp, atk, def, acc, eva, weight, exp, money
 
     while True:
 
-        print('\nPlease select the folowing:\n\nExplore \nShop \nQuit \n')
+        print('\nPlease select the folowing:\n\nExplore \nShop \nQuit')
 
         newOptions = input()
 
@@ -48,21 +45,20 @@ def mainGame():
 
         else:  # this is the battle loop starting point
 
-            newMob = random.choice(monsters)  # picks random monster
+            newMob = mobSpawn(hero.level)
 
             print(f'\n{newMob.name} has appeared!!\n')
 
             battle(hero, newMob)  # Battle function
 
-            if hero.stats[0] > 0:
-                print(f'\nYou killed the {newMob.name}!!')
+            if hero.hp > 0:
+                print(f'\nYou killed the {newMob.name}!!\n')
+                hero.exp += newMob.exp
+                hero.NeededExp()
 
             else:
-                print(f'You were killed by the {newMob.name}.')
+                print(f'\nYou were killed by the {newMob.name}.\n')
                 break
-
-        monsters = [mob('Slime', [10, 3, 2]), mob('Goblin', [12, 4, 1]),
-                    mob('Earth Elemental', [15, 4, 2])]
 
 
 if __name__ == '__main__':
