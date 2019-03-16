@@ -12,7 +12,7 @@ class Player(object):
     Takes player instance, creates player methods
     """
     def __init__(self, name, level, mainHp, mainMp,
-                 hp, mp, atk, defence, acc, eva, weight, money, exp):
+                 hp, mp, atk, defence, acc, eva, weight, gold, exp):
         self.name = name
         self.level = level
         self.mainHp = mainHp
@@ -24,7 +24,7 @@ class Player(object):
         self.acc = acc
         self.eva = eva
         self.weight = weight
-        self.money = money
+        self.gold = gold
         self.exp = exp
 
     def attack(self, other):
@@ -32,9 +32,13 @@ class Player(object):
         takes player stats and targets stats
         minuses def from attack and outputs correct parameters
         """
-        answer = input('What would you like to do? \n\nAttack \nItem \n')
+        answer = input('What would you like to do? \n\nAttack \nItem,\nRun \n')
         if answer.lower() == 'attack':
-            other.hp -= (self.atk - other.defence)
+            atkChance = random.randint(0, 8)
+            if self.acc > other.eva - atkChance:
+                other.hp -= (self.atk - other.defence)
+            else:
+                print('Your attack missed!')
         elif answer.lower() == 'item':
             print('Coming soon!')
             # print(f'Would you like to use your {hpPotion[0].name}? y/n\n')
@@ -44,8 +48,26 @@ class Player(object):
             #     self.useItem(hpPotion[0])
             # else:
             #     pass
+        elif answer.lower() == 'run':
+            print('Sorry, coming soon!')
+        # elif answer.lower() == 'run':
+        #     runChance = random.randint(0, 11)
+        #     if runChance >= 8:
+        #         return 'run'
+        #     else:
+        #         print("\nYou couldn't escape!\n")
         else:
             print('\nYou stumbled!\n')
+
+    def levelUp(self):
+        self.mainHp += 3
+        self.mainMp += 2
+        self.hp += 3
+        self.mp += 2
+        self.atk += 2
+        self.defence += 1
+        self.acc += 1
+        self.eva += 1
 
     def NeededExp(self):
         """
@@ -55,11 +77,13 @@ class Player(object):
         newlvl = expToLevel[self.level + 1]
         if self.exp >= newlvl:
             self.level += 1
+            self.levelUp()
+            print(self.mainHp)
             print(f'Congratulations! you reached Level {self.level}!')
 
         else:
             untilLevel = newlvl - self.exp
-            print(f"""You need {untilLevel} Experience until level {self.level+1}!""")
+            print(f"{untilLevel} Experience until level {self.level+1}!")
 
 # experience
 df = pd.read_excel('Data/Experience.xlsx', sheet_name='None')
@@ -91,13 +115,17 @@ class Mob(object):
 
     def attack(self, other):
         print(f'\n{self.name} attacks...')
-        other.hp -= (self.atk - other.defence)
+        atkChance = random.randint(0, 8)
+        if self.acc > other.eva - atkChance:
+            other.hp -= (self.atk - other.defence)
+        else:
+            print('Your attack missed!')
 
 
 def mobSpawn(lvl):
     if lvl <= 4:
-        chance = random.randint(0, 11)
-        if chance != 10:
+        chance = random.randint(0, 21)
+        if chance != 20:
             newMob = random.choice(lowLvlMobs)
             return newMob
         else:
@@ -116,9 +144,9 @@ lowLvlMobs = []
 lowBoss = []
 for i in importedCreatures:
     creatures.append(Mob(*i))  # unpacks list
-for i in importedCreatures[0:5]:
+for i in importedCreatures[0:4]:
     lowLvlMobs.append(Mob(*i))
-for i in importedCreatures[5:6]:
+for i in importedCreatures[4:6]:
     lowBoss.append(Mob(*i))
 
 
@@ -128,6 +156,7 @@ def battle(hero, newMob):
     Returns stats
     """
     while hero.hp > 0 and newMob.hp > 0:
+        # willRun = 'run'
         Player.attack(hero, newMob)
 
         print(f'\n{newMob.name} now has {newMob.hp} hp left!')

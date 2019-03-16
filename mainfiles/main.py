@@ -27,9 +27,9 @@ def mainGame():
             print('\nYou entered an invalid option! Please Try again.\n')
 
     userName = input('\nWhat is your username?: ')
-
     hero = Player(userName, 1, 15, 10, 15, 10, 5, 2, 3, 3, 10, 50, 0)
     # name, mainHp, mainMp, hp, atk, def, acc, eva, weight, exp, money
+    print(f'\nWelcome {hero.name}!\n')
 
     while True:
 
@@ -51,7 +51,10 @@ def mainGame():
 
             battle(hero, newMob)  # Battle function
 
-            if hero.hp > 0:
+            if hero.hp and newMob.hp > 0:
+                print('Got away safely!')
+
+            elif hero.hp > 0:
                 print(f'\nYou killed the {newMob.name}!!\n')
                 hero.exp += newMob.exp
                 hero.NeededExp()

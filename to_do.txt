@@ -1,0 +1,32 @@
+when done, put "//" infront of your name ex: --rich//
+
+_______________________________________________________________
+acc, evasion, weight, exp, level into stats/battle --rich //done -- need to include player stat upgrade upon leveling
+
+mob system -- boss monster spawn chance needs to be decreased, can be done at a later date. also need to chance stats of monsters.
+
+Magic system
+
+shop class -- rich
+
+bank system -- kevin
+
+item integration --kevin
+
+spreading sheeting items, monsters, magic --rich
+
+backpack integration into player --kevin
+
+save/load system -checkpoint system
+
+port into GUI --kevin/rich
+
+StoryLine
+
+skilltree - attributes
+
+integrate a map
+
+hero = player(userName, 15, 10, [15, 10, 5, 2, 3, 3, 10], 50)
+stats [hp, mp, atk, def, accuracy, evasion, weight(pounds)]
+print(f'{sword[0]} is {sword[0].stats[6]} pounds!')
