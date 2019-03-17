@@ -1,6 +1,9 @@
 """
 this module defines all battle mechanics
 """
+import time
+import sys
+import os
 
 
 def battle(hero, newMob):
@@ -15,14 +18,24 @@ def battle(hero, newMob):
         # willRun = 'run'
         Player.attack(hero, newMob)
 
-        print(f'\n{newMob.name} now has {newMob.hp} hp left!')
+        mobTakesDmg = f'\n{newMob.name} now has {newMob.hp} hp left!'
+        for writetime in mobTakesDmg:
+            sys.stdout.write(writetime)
+            sys.stdout.flush()
+            time.sleep(0.03)
 
         if newMob.hp <= 0:
             break
 
         Mob.attack(newMob, hero)
 
-        print(f'\n{newMob.name} attacked, you have {hero.hp} hp left!')
+        youTakeDmg = f'\n{newMob.name} attacked, you have {hero.hp} hp left!'
+        for writetime in youTakeDmg:
+            sys.stdout.write(writetime)
+            sys.stdout.flush()
+            time.sleep(0.03)
+        time.sleep(1)
+        os.system('cls')
 
 if __name__ == '__main__':
     battle()

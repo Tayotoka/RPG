@@ -4,6 +4,9 @@ This module dictates character development.
 import pandas as pd
 import itertools
 import random
+import sys
+import time
+import os
 from fight import battle
 
 
@@ -32,13 +35,22 @@ class Player(object):
         takes player stats and targets stats
         minuses def from attack and outputs correct parameters
         """
-        answer = input('What would you like to do? \n\nAttack \nItem,\nRun \n')
+        doWhat = 'What would you like to do? \n\nAttack \nItem\nRun \n'
+        for writetime in doWhat:
+                    sys.stdout.write(writetime)
+                    sys.stdout.flush()
+                    time.sleep(0.04)
+        answer = input()
         if answer.lower() == 'attack':
-            atkChance = random.randint(0, 8)
+            atkChance = random.randint(0, 7)
             if self.acc > other.eva - atkChance:
                 other.hp -= (self.atk - other.defence)
             else:
-                print('Your attack missed!')
+                iMissed = 'Your attack missed!'
+                for writetime in iMissed:
+                    sys.stdout.write(writetime)
+                    sys.stdout.flush()
+                    time.sleep(0.04)
         elif answer.lower() == 'item':
             print('Coming soon!')
             # print(f'Would you like to use your {hpPotion[0].name}? y/n\n')
@@ -57,7 +69,11 @@ class Player(object):
         #     else:
         #         print("\nYou couldn't escape!\n")
         else:
-            print('\nYou stumbled!\n')
+            stumbled = 'You stumbled!'
+            for writetime in stumbled:
+                    sys.stdout.write(writetime)
+                    sys.stdout.flush()
+                    time.sleep(0.04)
 
     def levelUp(self):
         self.mainHp += 3
@@ -78,12 +94,18 @@ class Player(object):
         if self.exp >= newlvl:
             self.level += 1
             self.levelUp()
-            print(self.mainHp)
-            print(f'Congratulations! you reached Level {self.level}!')
-
+            printLevel = f'Congratulations! you reached Level {self.level}!'
+            for writetime in printLevel:
+                sys.stdout.write(writetime)
+                sys.stdout.flush()
+                time.sleep(0.04)
         else:
             untilLevel = newlvl - self.exp
-            print(f"{untilLevel} Experience until level {self.level+1}!")
+            printExp = f"{untilLevel} Experience until level {self.level+1}!"
+            for writetime in printExp:
+                sys.stdout.write(writetime)
+                sys.stdout.flush()
+                time.sleep(0.04)
 
 # experience
 df = pd.read_excel('Data/Experience.xlsx', sheet_name='None')

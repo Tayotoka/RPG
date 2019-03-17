@@ -4,6 +4,9 @@ This module will define all mob mechanics
 import pandas as pd
 import itertools
 import random
+import sys
+import time
+import os
 from fight import battle
 
 
@@ -27,15 +30,31 @@ class Mob(object):
         self.gold = gold
 
     def attack(self, other):
-        print(f'\n{self.name} attacks...')
-        atkChance = random.randint(0, 8)
+        """
+        takes in Mob and Player stats
+        return new stats
+        """
+        theMobAttacks = f'\n{self.name} attacks...\n'
+        for writetime in theMobAttacks:
+                    sys.stdout.write(writetime)
+                    sys.stdout.flush()
+                    time.sleep(0.03)
+        atkChance = random.randint(0, 7)
         if self.acc > other.eva - atkChance:
             other.hp -= (self.atk - other.defence)
         else:
-            print('Your attack missed!')
+            theMobMissed = f"The {self.name}'s attack missed!"
+            for writetime in theMobMissed:
+                sys.stdout.write(writetime)
+                sys.stdout.flush()
+                time.sleep(0.03)
 
 
 def mobSpawn(lvl):
+    """
+    takes a list of creatures
+    returns a random creature
+    """
     if lvl <= 4:
         chance = random.randint(0, 21)
         if chance != 20:
