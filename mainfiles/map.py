@@ -54,8 +54,8 @@ entry = 1
 leave = 2
 loot = 3                # tile map w/ variable names
 tilemap = [[0, 1, 0],   # [floor, entry, floor]
-           [2, 0, 0],   # [loot, floor, floor]
-           [0, 3, 0]]   # [floor, exit, floor]
+           [2, 0, 0],   # [exit, floor, floor]
+           [0, 3, 0]]   # [floor, loot, floor]
 
 maps = World(0, 0)
 hero = Player('Tayotoka')
