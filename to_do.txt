@@ -1,7 +1,7 @@
 when done, put "//" infront of your name ex: --rich//
 
 _______________________________________________________________
-acc, evasion, weight, exp, level into stats/battle --rich //done -- need to include player stat upgrade upon leveling
+acc, evasion, weight, exp, level into stats/battle --rich //done
 
 mob system -- boss monster spawn chance needs to be decreased, can be done at a later date. also need to chance stats of monsters.
 

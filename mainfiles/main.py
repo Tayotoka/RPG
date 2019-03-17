@@ -1,10 +1,10 @@
 """
 Text based RPG, battle random monsters.
 """
-from charmob import (Player, Mob, Potion, battle,
-                     creatures, mobSpawn)
-
 import random
+from character import Player
+from spawns import (Mob, creatures, mobSpawn)
+from fight import battle
 
 
 def mainGame():
