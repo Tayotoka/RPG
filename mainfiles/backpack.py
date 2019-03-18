@@ -63,11 +63,11 @@ class container(object):
 
 backpack = container('Inventory')
 
-sword = item('Sword', 10)
+sword = [item('Bronze Sword', 10), item('Iron Sword', 15)]
 gold = item('Gold Coin', 1, 50)
-potion = item('potion', 5)
+potion = [item('Crude potion', 5), item('Better Potion', 15)]
 
-backpack.add(sword)
+# backpack.add(sword)
 backpack.add(gold)
 
 
@@ -94,10 +94,19 @@ def purchase(*items):
             backpack.add(item)
             print('You purchased a {0}'.format(item.name))
 
-print(backpack[gold].quantity)
 
-purchase(sword, sword, potion, potion)
+def test():
+    while True:
 
-print(backpack[gold].quantity)
+        print(backpack[gold].quantity)
 
-print(len(backpack))
+        purchase(sword[0])
+
+        for name, item in backpack:
+            print(f"you have {item.quantity} {item.name}'s")
+        text = input('quit?')
+        if text == 'yes':
+            exit()
+
+if __name__ == '__main__':
+    test()

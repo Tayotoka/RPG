@@ -64,7 +64,12 @@ def getName():
     returns player as a class object.
     """
     os.system('cls')
-    userName = input('\nWhat is your username?: ')
+    whatsUser = '\nWhat is your username?: '
+    for writetime in whatsUser:
+        sys.stdout.write(writetime)
+        sys.stdout.flush()
+        time.sleep(0.03)
+    userName = input()
     hero = Player(userName, 1, 15, 10, 15, 10, 5, 2, 3, 3, 10, 50, 0)
     # name, level, mainHp, mainMp, hp, atk, def, acc, eva, weight, exp, money
     os.system('cls')
@@ -89,7 +94,7 @@ def gameStart(hero):
         for writetime in gamemech:
             sys.stdout.write(writetime)
             sys.stdout.flush()
-            time.sleep(0.04)
+            time.sleep(0.02)
 
         newOptions = input()
 
@@ -108,7 +113,7 @@ def gameStart(hero):
             for writetime in mobAppears:
                 sys.stdout.write(writetime)
                 sys.stdout.flush()
-                time.sleep(0.04)
+                time.sleep(0.02)
 
             battle(hero, newMob)  # Battle function
 
@@ -121,11 +126,11 @@ def gameStart(hero):
                 for writetime in youWon:
                     sys.stdout.write(writetime)
                     sys.stdout.flush()
-                    time.sleep(0.04)
+                    time.sleep(0.03)
 
                 hero.exp += newMob.exp
                 hero.NeededExp()
-                time.sleep(2)
+                time.sleep(1.5)
                 os.system('cls')
             else:
                 os.system('cls')

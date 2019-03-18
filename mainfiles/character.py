@@ -35,13 +35,14 @@ class Player(object):
         takes player stats and targets stats
         minuses def from attack and outputs correct parameters
         """
-        doWhat = 'What would you like to do? \n\nAttack \nItem\nRun \n'
+        doWhat = """What would you like to do?
+        \n\nAttack = A \nItem = I\nRun = R \n"""
         for writetime in doWhat:
                     sys.stdout.write(writetime)
                     sys.stdout.flush()
-                    time.sleep(0.04)
-        answer = input()
-        if answer.lower() == 'attack':
+                    time.sleep(0.03)
+        answer = input().lower()
+        if answer == 'a':
             atkChance = random.randint(0, 7)
             if self.acc > other.eva - atkChance:
                 other.hp -= (self.atk - other.defence)
@@ -50,8 +51,8 @@ class Player(object):
                 for writetime in iMissed:
                     sys.stdout.write(writetime)
                     sys.stdout.flush()
-                    time.sleep(0.04)
-        elif answer.lower() == 'item':
+                    time.sleep(0.03)
+        elif answer == 'i':
             print('Coming soon!')
             # print(f'Would you like to use your {hpPotion[0].name}? y/n\n')
             # usepotion = input()
@@ -60,7 +61,7 @@ class Player(object):
             #     self.useItem(hpPotion[0])
             # else:
             #     pass
-        elif answer.lower() == 'run':
+        elif answer == 'r':
             print('Sorry, coming soon!')
         # elif answer.lower() == 'run':
         #     runChance = random.randint(0, 11)
