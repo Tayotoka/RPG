@@ -2,12 +2,12 @@
 This module will define all mob mechanics
 """
 import pandas as pd
-import itertools
 import random
 import sys
 import time
 import os
 from fight import battle
+from worldMap import zoneMap
 
 
 class Mob(object):
@@ -28,6 +28,7 @@ class Mob(object):
         self.tier = tier
         self.exp = exp
         self.gold = gold
+        self.status = []
 
     def attack(self, other):
         """
@@ -39,6 +40,7 @@ class Mob(object):
                     sys.stdout.write(writetime)
                     sys.stdout.flush()
                     time.sleep(0.03)
+        time.sleep(0.5)
         atkChance = random.randint(0, 7)
         if self.acc > other.eva - atkChance:
             other.hp -= (self.atk - other.defence)

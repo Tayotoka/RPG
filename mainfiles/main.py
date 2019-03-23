@@ -5,7 +5,7 @@ import random
 import sys
 import os
 import time
-from character import Player
+from character import Player, zoneMap
 from spawns import (Mob, creatures, mobSpawn)
 from fight import battle
 
@@ -24,14 +24,14 @@ def startScreen():
 
         if startQuestion == 'start':
             getName()
+        elif startQuestion == 'load':
+            loadGame()
         elif startQuestion == 'help':
             getHelp()
         elif startQuestion == 'options':
             options()
         elif startQuestion == 'quit':
             exit('Thank you for playing!')
-        elif startQuestion == 'load':
-            loadGame()
         else:
             print(f'Sorry, {startQuestion} is not a valid input!')
 
@@ -80,32 +80,87 @@ def getName():
             sys.stdout.flush()
             time.sleep(0.03)
     gameStart(hero)
+ZONENAME = '',
+DESCRIPTION = 'description',
+EXAMINATION = 'examine',
+SOLVED = False,
+UP = 'up',
+DOWN = 'down',
+LEFT = 'left',
+RIGHT = 'right', 'east'
 
 
-def gameStart(hero):
+def prompt():
     """
-    takes inputs from modules and player,
-    outputs actual game content.
+    takes users input
+    outputs players response
     """
-    while True:
+    action = input().lower()
+    acceptable_actions = ['move', 'go', 'travel', 'walk', 'quit',
+                          'examine', 'inspect', 'explore', 'shop']
+    while action not in acceptable_actions:
+        print(f'{action} is not a valid input, please try again: \n')
+        action = input().lower()
+    if action == 'quit':
+        exit('Thank you for playing!')
+    elif action == 'shop':
+        shop()
+    elif action in ['move', 'go', 'travel', 'walk']:
+        Player.playerMove(hero, action)
+    elif action in ['examine', 'inspect']:
+        playerExamine(action)
+    elif action == 'explore':
+        explore(hero, action)
 
-        gamemech = '\nPlease select the folowing:\n\nExplore \nShop \nQuit\n'
 
-        for writetime in gamemech:
-            sys.stdout.write(writetime)
-            sys.stdout.flush()
-            time.sleep(0.02)
+def playerExamine(action):
+    """
+    takes information on items, creatures, ect,
+    returns and prints information
+    """
+    pass
 
-        newOptions = input()
 
-        if newOptions.lower() == 'quit':
-            exit('Have a nice day!')
+def prompt(hero):
+        """
+        takes users input
+        outputs players response
+        """
+        action = input().lower()
+        acceptable_actions = ['move', 'go', 'travel', 'walk', 'quit',
+                              'examine', 'inspect', 'explore', 'shop']
+        while action not in acceptable_actions:
+            print(f'{action} is not a valid input, please try again: \n')
+            action = input().lower()
+        if action == 'quit':
+            exit('Thank you for playing!')
 
-        elif newOptions.lower() == 'shop':
-            print('coming soon!')
+        elif action == 'shop':
+            shop()
 
-        else:  # this is the battle loop starting point
+        elif action in ['move', 'go', 'travel', 'walk']:
+            Player.playerMove(hero, action)
 
+        elif action in ['examine', 'inspect']:
+            playerExamine(action)
+
+        elif action in 'explore':
+            explore(hero)
+
+
+def printLocation(hero):
+    """
+    takes current player location
+    prints out players location
+    """
+    print('\n' + ('#' * (4 + len(hero.location))))
+    print(f'# {hero.location.upper()} #')
+    print(f'# {zoneMap[hero.location][DESCRIPTION]} #')
+    print('#' * (4 + len(hero.location)))
+    prompt()
+
+
+def explore(hero):
             newMob = mobSpawn(hero.level)
 
             os.system('cls')
@@ -141,7 +196,28 @@ def gameStart(hero):
                     time.sleep(0.04)
                     time.sleep(1)
                 os.system('cls')
-                break
+
+
+def gameStart(hero):
+    """
+    takes inputs from modules and player,
+    outputs actual game content.
+    """
+
+    while True:
+
+        gamemech = """\nPlease select the folowing:
+                      \nMove \nExplore \nShop \nQuit\n"""
+
+        for writetime in gamemech:
+            sys.stdout.write(writetime)
+            sys.stdout.flush()
+            time.sleep(0.02)
+        # newOptions = input()
+        while True:
+            prompt(hero)
+
+        # this is the battle loop starting point
 
 if __name__ == '__main__':
     startScreen()
