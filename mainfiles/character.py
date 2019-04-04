@@ -83,11 +83,13 @@ class Player(object):
         takes current player location
         prints out players location
         """
+        from main import mainUI
         print('\n' + ('#' * (4 + len(self.location))))
         print(f'# {self.location.upper()} #')
         print(f'# {zoneMap[self.location][DESCRIPTION]} #')
         print('#' * (4 + len(self.location)))
         time.sleep(1)
+        mainUI(self)
 
     def attack(self, other):
         """
@@ -105,6 +107,7 @@ class Player(object):
         answer = input().lower()
         if answer == 'a':
             atkChance = random.randint(0, 7)
+            self.atk += 5  # Delete later, not to use
             if self.acc > other.eva - atkChance:
                 other.hp -= (self.atk - other.defence)
             else:
@@ -220,11 +223,11 @@ zoneMap = {
         EXAMINATION: 'examine',
         SOLVED: False,
         UP: '',
-        DOWN: 'down',
+        DOWN: 'a7',
         LEFT: 'a2',
         RIGHT: 'shop'
     },
-    'a4': {
+    'shop': {
         ZONENAME: 'Shop',
         DESCRIPTION: 'This shop sells all kinds of goods!\n',
         EXAMINATION: 'examine',
@@ -261,7 +264,7 @@ zoneMap = {
         SOLVED: False,
         UP: 'a3',
         DOWN: 'a3',
-        LEFT: 'a11',
+        LEFT: 'a6',
         RIGHT: 'a8'
     },
     'a8': {
@@ -269,7 +272,7 @@ zoneMap = {
         DESCRIPTION: 'description',
         EXAMINATION: 'examine',
         SOLVED: False,
-        UP: 'a4',
+        UP: 'shop',
         DOWN: 'a12',
         LEFT: 'a7',
         RIGHT: ''
@@ -309,7 +312,7 @@ zoneMap = {
         DESCRIPTION: 'description',
         EXAMINATION: 'examine',
         SOLVED: False,
-        UP: 'up',
+        UP: 'a8',
         DOWN: 'a16',
         LEFT: 'a11',
         RIGHT: ''

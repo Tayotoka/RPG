@@ -161,41 +161,58 @@ def printLocation(hero):
 
 
 def explore(hero):
-            newMob = mobSpawn(hero.level)
+    newMob = mobSpawn(hero.level)
 
-            os.system('cls')
-            mobAppears = f'\n{newMob.name} has appeared!!\n'
-            for writetime in mobAppears:
-                sys.stdout.write(writetime)
-                sys.stdout.flush()
-                time.sleep(0.02)
+    os.system('cls')
+    mobAppears = f'\n{newMob.name} has appeared!!\n'
+    for writetime in mobAppears:
+        sys.stdout.write(writetime)
+        sys.stdout.flush()
+        time.sleep(0.02)
 
-            battle(hero, newMob)  # Battle function
+    battle(hero, newMob)  # Battle function
 
-            if hero.hp and newMob.hp > 0:
-                print('Got away safely!')
+    if hero.hp and newMob.hp > 0:
+        print('Got away safely!')
 
-            elif hero.hp > 0:
-                os.system('cls')
-                youWon = f'\nYou killed the {newMob.name}!!\n'
-                for writetime in youWon:
-                    sys.stdout.write(writetime)
-                    sys.stdout.flush()
-                    time.sleep(0.03)
+    elif hero.hp > 0:
+        os.system('cls')
+        youWon = f'\nYou killed the {newMob.name}!!\n'
+        for writetime in youWon:
+            sys.stdout.write(writetime)
+            sys.stdout.flush()
+            time.sleep(0.03)
 
-                hero.exp += newMob.exp
-                hero.NeededExp()
-                time.sleep(1.5)
-                os.system('cls')
-            else:
-                os.system('cls')
-                youDied = f'\nYou were killed by the {newMob.name}.\n'
-                for writetime in youDied:
-                    sys.stdout.write(writetime)
-                    sys.stdout.flush()
-                    time.sleep(0.04)
-                    time.sleep(1)
-                os.system('cls')
+        hero.exp += newMob.exp
+        hero.NeededExp()
+        time.sleep(1.5)
+        os.system('cls')
+        mainUI(hero)
+    else:
+        os.system('cls')
+        youDied = f'\nYou were killed by the {newMob.name}.\n'
+        for writetime in youDied:
+            sys.stdout.write(writetime)
+            sys.stdout.flush()
+            time.sleep(0.04)
+            time.sleep(1)
+        os.system('cls')
+        mainUI(hero)
+
+
+def mainUI(hero):
+    """
+    takes in hero
+    prints out main options
+    """
+    gamemech = """\nPlease select the folowing:
+                      \nMove \nExplore \nShop \nQuit\n"""
+
+    for writetime in gamemech:
+        sys.stdout.write(writetime)
+        sys.stdout.flush()
+        time.sleep(0.02)
+    prompt(hero)
 
 
 def gameStart(hero):
@@ -204,20 +221,9 @@ def gameStart(hero):
     outputs actual game content.
     """
 
-    while True:
+    mainUI(hero)
 
-        gamemech = """\nPlease select the folowing:
-                      \nMove \nExplore \nShop \nQuit\n"""
-
-        for writetime in gamemech:
-            sys.stdout.write(writetime)
-            sys.stdout.flush()
-            time.sleep(0.02)
-        # newOptions = input()
-        while True:
-            prompt(hero)
-
-        # this is the battle loop starting point
+    # this is the battle loop starting point
 
 if __name__ == '__main__':
     startScreen()
