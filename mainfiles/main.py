@@ -8,7 +8,7 @@ import time
 from character import Player, zoneMap
 from spawns import (Mob, creatures, mobSpawn)
 from fight import battle
-
+from backpack import initBackpack
 
 def startScreen():
     print('--------Welcome!-------\n')
@@ -89,38 +89,13 @@ DOWN = 'down',
 LEFT = 'left',
 RIGHT = 'right', 'east'
 
-
-def prompt():
-    """
-    takes users input
-    outputs players response
-    """
-    action = input().lower()
-    acceptable_actions = ['move', 'go', 'travel', 'walk', 'quit',
-                          'examine', 'inspect', 'explore', 'shop']
-    while action not in acceptable_actions:
-        print(f'{action} is not a valid input, please try again: \n')
-        action = input().lower()
-    if action == 'quit':
-        exit('Thank you for playing!')
-    elif action == 'shop':
-        shop()
-    elif action in ['move', 'go', 'travel', 'walk']:
-        Player.playerMove(hero, action)
-    elif action in ['examine', 'inspect']:
-        playerExamine(action)
-    elif action == 'explore':
-        explore(hero, action)
-
-
 def playerExamine(action):
     """
     takes information on items, creatures, ect,
     returns and prints information
     """
     pass
-
-
+    
 def prompt(hero):
         """
         takes users input
@@ -136,7 +111,8 @@ def prompt(hero):
             exit('Thank you for playing!')
 
         elif action == 'shop':
-            shop()
+            #shop()
+            pass
 
         elif action in ['move', 'go', 'travel', 'walk']:
             Player.playerMove(hero, action)
@@ -157,7 +133,7 @@ def printLocation(hero):
     print(f'# {hero.location.upper()} #')
     print(f'# {zoneMap[hero.location][DESCRIPTION]} #')
     print('#' * (4 + len(hero.location)))
-    prompt()
+    prompt(hero)
 
 
 def explore(hero):
@@ -203,9 +179,15 @@ def gameStart(hero):
     takes inputs from modules and player,
     outputs actual game content.
     """
-
+    initBackpack()
+    #backpack = container('Inventory')
+    #gold = item('Gold Coin', 1, 50)
+    #backpack.add(gold)
+    ## added starting gold
+    #for item in backpack:
+    #    print(f'you have \n{display_Backpack(backpack)}')
+    ##
     while True:
-
         gamemech = """\nPlease select the folowing:
                       \nMove \nExplore \nShop \nQuit\n"""
 

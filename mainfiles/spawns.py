@@ -84,4 +84,4 @@ for i in importedCreatures[4:6]:
     lowBoss.append(Mob(*i))
 
 if __name__ == '__main__':
-    mobSpawn()
+    mobSpawn(5)

@@ -38,4 +38,5 @@ def battle(hero, newMob):
         os.system('cls')
 
 if __name__ == '__main__':
-    battle()
+    from character import Player
+    battle(hero, newMob)

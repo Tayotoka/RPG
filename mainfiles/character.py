@@ -6,9 +6,8 @@ import random
 import sys
 import time
 import os
-from fight import battle, magic
-from magic import Magic, Summons, fire, water, wind, earth, darkness, ourSummon
-
+#from fight import battle, magic
+#from magic import Magic, Summons, fire, water, wind, earth, darkness, ourSummon
 
 class Player(object):
     """
@@ -33,6 +32,21 @@ class Player(object):
         self.magic = []
         self.status = []
 
+    #def PlyInventory(self):
+    #    """
+    #    checks inventory;
+    #    takes backpack, and prints items
+
+    #    """  
+    #def shop(self):
+    #    """
+    #    prints shops items, and etc...
+    #    """
+    #    print('Welcome to the shop. \nWhat would you like to buy today? ')
+        
+        
+    #    print("not available")    
+    #    pass
     def playerMove(self, action):
         """
         takes input on action, asks direction,
@@ -118,7 +132,8 @@ class Player(object):
             print('magic coming soon!')
 
         elif answer == 'i':
-            print('Coming soon!')
+            print('Coming soon!\n')
+            
             # print(f'Would you like to use your {hpPotion[0].name}? y/n\n')
             # usepotion = input()
 
@@ -176,12 +191,12 @@ class Player(object):
                 time.sleep(0.04)
 
 # experience
-df = pd.read_excel('Data/Experience.xlsx', sheet_name='None')
+#df = pd.read_excel('Data/Experience.xlsx', sheet_name='None')
 
-experience = df.values.tolist()  # the packed list
+#experience = df.values.tolist()  # the packed list
 expToLevel = []  # the unpacked list
-for e in experience:
-    expToLevel.append((*e))  # unpacks list
+#for e in experience:
+#    expToLevel.append((*e))  # unpacks list
 
 # Character mechanics
 ZONENAME = '',
