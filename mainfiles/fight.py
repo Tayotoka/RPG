@@ -37,6 +37,22 @@ def battle(hero, newMob):
         time.sleep(0.5)
         os.system('cls')
 
+
+def magic(hero, newMob):
+    """
+    takes character stats and magic
+    outputs damage
+    """
+    from character import Player  # these are here to only to circumvent
+    from spawns import Mob        # circular dependency
+    whatMagic = 'What would you like to you?'
+    for writetime in whatMagic:
+        sys.stdout.write(writetime)
+        sys.stdout.flush()
+        time.sleep(0.01)
+    for i in hero.magic:
+        print(i)
+
 if __name__ == '__main__':
     from character import Player
     battle(hero, newMob)

@@ -7,7 +7,6 @@ import sys
 import time
 import os
 from fight import battle
-from worldMap import zoneMap
 
 
 class Mob(object):
