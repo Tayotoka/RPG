@@ -1,14 +1,19 @@
 import sys
 import os
 import time
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtWidgets, QtGui, QtCore, Qt
+from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QMessageBox
+from PyQt5.QtWidgets import (QDialog, QMessageBox, QWidget,
+                             QVBoxLayout, QHBoxLayout, QSpacerItem,
+                             QSizePolicy, QMessageBox)
 import xml.etree.ElementTree as etree
 from gui.window import Ui_MainWindow
 from gui.loginGui import Ui_loginWindow
 from gui.signUpGui import Ui_SignUpWindow
 from gui.gameWindow import Ui_gameWindow
+from gui.optionsWindow import Ui_optionsMain
+from Data.Dialog import gameDialog
 from character import Player
 from spawns import Mob, mobSpawn
 from fight import battle
@@ -97,7 +102,8 @@ class SignUpWindow(Main):
         root = xmlD.getroot()
         # write user data to xml file
         newUser = etree.SubElement(root, "User",
-                                   attrib={"userName": self.signing.newUsername.text()})
+                                   attrib={"userName":
+                                           self.signing.newUsername.text()})
         newUserName = etree.SubElement(newUser, "Username")
         newUserName.text = self.signing.newUsername.text()
         newUserPass = etree.SubElement(newUser, "Password")
@@ -114,23 +120,60 @@ class gameWindow(Main):
         super().__init__()
         self.gaming = Ui_gameWindow()
         self.gaming.setupUi(self)
+        # self.optionWindow = []
+        self.currentGameMode = 'Dialog'
+        self.gameMode = {
+            'Dialog': {
+                0: '',
+                1: '',
+                2: self.newText,  # right click
+                3: self.removeText  # left click
+            },
+            # 'Exploration': {
+            #     0: moveUp,
+            #     1: moveDown,
+            #     2: moveRight,
+            #     3: moveLeft,
+            #     4: Select,
+            #     5: back,
+            #     6: charScreen,
+            #     6: backPackScreen
+            # }
+        }
         self.txtNumber = 0
-        self.words = ['Welcome to the RPG game!', 'What would you like to do?',
-                      'Please select from the following:']
-        self.gaming.txtDisplay.setAlignment(QtCore.Qt.AlignVCenter)
-        self.gaming.txtDisplay.append(self.words[self.txtNumber])
-        # right button functionality
-        self.gaming.btnRight.clicked.connect(self.newText)
-        # left button functionality
-        self.gaming.btnLeft.clicked.connect(self.removeText)
+        f = QFont()
+        f.setPointSize(16)
+        self.gaming.txtDisplay.setAlignment(QtCore.Qt.AlignCenter)
+        self.gaming.txtDisplay.setFont(f)
+        self.gaming.txtDisplay.append(gameDialog[self.txtNumber])
+
+        # button functionality
+        self.gaming.btnGameOptions.clicked.connect(self.gameOptions)
+        # self.gaming.btnUp.clicked.connect(
+        #     self.gameMode[self.currentGameMode[0]]
+        # )
+        # self.gaming.btnDown.clicked.connect(
+        #     self.gameMode[self.currentGameMode[1]]
+        # )
+        self.gaming.btnRight.clicked.connect(
+            self.gameMode[self.currentGameMode][2]
+        )
+        self.gaming.btnLeft.clicked.connect(
+            self.gameMode[self.currentGameMode][3]
+        )
+
+    def gameOptions(self):
+        self.o = OptionWindow()
+        self.o.show()
 
     def newText(self):
-        if len(self.words) == self.txtNumber:
+        if len(gameDialog) == self.txtNumber:
             pass
         else:
             text = self.gaming.txtDisplay
             text.clear()  # clears all current text
-            text.append(self.words[self.txtNumber])
+            text.setAlignment(QtCore.Qt.AlignCenter)
+            text.append(gameDialog[self.txtNumber])
             self.txtNumber += 1
         # or use the text.append(words) without .toPlaintext()
 
@@ -141,8 +184,33 @@ class gameWindow(Main):
             self.txtNumber -= 1
             text = self.gaming.txtDisplay
             text.clear()
-            text.append(self.words[self.txtNumber])
+            self.gaming.txtDisplay.setAlignment(QtCore.Qt.AlignCenter)
+            text.append(gameDialog[self.txtNumber])
         # or use the text.append(words) without .toPlaintext()
+
+
+class OptionWindow(QWidget):
+
+    def __init__(self):
+        super().__init__()
+
+        self.options = Ui_optionsMain()
+        self.options.setupUi(self)
+        self.options.btnQuit.clicked.connect(self.Quit)
+
+    def Quit(self):
+        self.wantQuit = QMessageBox()
+        self.wantQuit.setText('Are you sure you want to quit?')
+        self.wantQuit.setWindowTitle('Quit')
+        self.wantQuit.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+        self.wantQuit.buttonClicked()
+        self.returnValue = self.wantQuit.exec()
+        if self.returnValue == QMessageBox.Yes:
+            exit()
+        else:
+            pass
+
+
 
 
 if __name__ == '__main__':
