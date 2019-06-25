@@ -13,10 +13,21 @@ def battle(hero, newMob):
     """
     from character import Player  # these are here to only to circumvent
     from spawns import Mob        # circular dependency
-
+    import backpack 
+    
     while hero.hp > 0 and newMob.hp > 0:
-        # willRun = 'run'
-        Player.attack(hero, newMob)
+            # willRun = 'run'
+            #executes attack method from player class and stores in variable ivalue
+        ivalue = Player.attack(hero, newMob)
+
+            #if ivalue exists, then increase heros hp attribute and deletes ivalue after its been used
+        if ivalue:
+            #status effect implemented from support item
+            hero.hp += ivalue
+            del ivalue
+        else:
+            #deletes ivalue if not in existence
+            del ivalue
 
         mobTakesDmg = f'\n{newMob.name} now has {newMob.hp} hp left!'
         for writetime in mobTakesDmg:
@@ -53,6 +64,6 @@ def magic(hero, newMob):
     for i in hero.magic:
         print(i)
 
-if __name__ == '__main__':
-    from character import Player
-    battle(hero, newMob)
+# if __name__ == '__main__':
+#     from character import Player
+#     battle(hero, newMob)

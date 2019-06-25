@@ -55,7 +55,8 @@ def prompt():
     if action == 'quit':
         exit('Thank you for playing!')
     elif action == 'shop':
-        shop()
+        #shop()
+        pass
     elif action in ['move', 'go', 'travel', 'walk']:
         playerMove(action)
     elif action in ['examine', 'inspect']:
@@ -256,16 +257,6 @@ zoneMap = {
         DOWN: '',
         LEFT: 'a13',
         RIGHT: 'a15'
-    },
-    'a15': {
-        ZONENAME: '',
-        DESCRIPTION: 'description',
-        EXAMINATION: 'examine',
-        SOLVED: False,
-        UP: 'a11',
-        DOWN: '',
-        LEFT: 'a14',
-        RIGHT: 'a16'
     },
     'a15': {
         ZONENAME: '',

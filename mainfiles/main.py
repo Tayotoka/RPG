@@ -8,8 +8,7 @@ import time
 from character import Player, zoneMap
 from spawns import (Mob, creatures, mobSpawn)
 from fight import battle
-from backpack import initBackpack
-
+import backpack
 def startScreen():
     print('--------Welcome!-------\n')
     print('What would you like to do?\n')
@@ -34,7 +33,6 @@ def startScreen():
             exit('Thank you for playing!')
         else:
             print(f'Sorry, {startQuestion} is not a valid input!')
-
 
 def getHelp():
     """
@@ -103,15 +101,17 @@ def prompt(hero):
         """
         action = input().lower()
         acceptable_actions = ['move', 'go', 'travel', 'walk', 'quit',
-                              'examine', 'inspect', 'explore', 'shop']
+                              'examine', 'inspect', 'explore', 'shop', 'inventory']
         while action not in acceptable_actions:
             print(f'{action} is not a valid input, please try again: \n')
             action = input().lower()
         if action == 'quit':
             exit('Thank you for playing!')
-
+        elif action == 'inventory':
+            backpack.test()
         elif action == 'shop':
-            #shop()
+            # backpack.__initBackpack__()
+            # purchase()
             pass
 
         elif action in ['move', 'go', 'travel', 'walk']:
@@ -175,20 +175,18 @@ def explore(hero):
         os.system('cls')
         mainUI(hero)
 
-
 def mainUI(hero):
     """
     takes in hero
     prints out main options
     """
-    gamemech = """\nPlease select the folowing:
-                      \nMove \nExplore \nShop \nQuit\n"""
+    gamemech = """\nPlease select the following:
+                      \nMove \nExplore \nShop \nInventory \nQuit\n"""
 
     for writetime in gamemech:
         sys.stdout.write(writetime)
         sys.stdout.flush()
         time.sleep(0.02)
-    prompt(hero)
 
 
 def gameStart(hero):
@@ -196,32 +194,12 @@ def gameStart(hero):
     takes inputs from modules and player,
     outputs actual game content.
     """
-<<<<<<< HEAD
-    initBackpack()
-    #backpack = container('Inventory')
-    #gold = item('Gold Coin', 1, 50)
-    #backpack.add(gold)
-    ## added starting gold
-    #for item in backpack:
-    #    print(f'you have \n{display_Backpack(backpack)}')
-    ##
     while True:
-        gamemech = """\nPlease select the folowing:
-                      \nMove \nExplore \nShop \nQuit\n"""
-
-        for writetime in gamemech:
-            sys.stdout.write(writetime)
-            sys.stdout.flush()
-            time.sleep(0.02)
+        mainUI(hero)
         # newOptions = input()
-        while True:
-            prompt(hero)
-=======
-
-    mainUI(hero)
->>>>>>> d70b037abc0f1141c9b3e046ba57ce29796358ad
-
+        prompt(hero)
     # this is the battle loop starting point
 
 if __name__ == '__main__':
     startScreen()
+    

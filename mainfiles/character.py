@@ -1,13 +1,12 @@
-"""
+'''
 This module dictates character development.
-"""
+'''
 import pandas as pd
 import random
 import sys
 import time
 import os
-#from fight import battle, magic
-#from magic import Magic, Summons, fire, water, wind, earth, darkness, ourSummon
+import backpack 
 
 class Player(object):
     """
@@ -31,22 +30,8 @@ class Player(object):
         self.location = 'a6'
         self.magic = []
         self.status = []
-
-    #def PlyInventory(self):
-    #    """
-    #    checks inventory;
-    #    takes backpack, and prints items
-
-    #    """  
-    #def shop(self):
-    #    """
-    #    prints shops items, and etc...
-    #    """
-    #    print('Welcome to the shop. \nWhat would you like to buy today? ')
         
         
-    #    print("not available")    
-    #    pass
     def playerMove(self, action):
         """
         takes input on action, asks direction,
@@ -97,26 +82,26 @@ class Player(object):
         takes current player location
         prints out players location
         """
-        from main import mainUI
         print('\n' + ('#' * (4 + len(self.location))))
         print(f'# {self.location.upper()} #')
         print(f'# {zoneMap[self.location][DESCRIPTION]} #')
         print('#' * (4 + len(self.location)))
         time.sleep(1)
-        mainUI(self)
+        
 
     def attack(self, other):
         """
         takes player stats and targets stats
         minuses def from attack and outputs correct parameters
         """
+        
         doWhat = f"""\nYour hp = {self.hp} {other.name} hp = {other.hp}
         \nWhat would you like to do?
         \nAttack = A\nmagic = M\nItem = I\nRun = R \n"""
         for writetime in doWhat:
-                    sys.stdout.write(writetime)
-                    sys.stdout.flush()
-                    time.sleep(0.01)
+            sys.stdout.write(writetime)
+            sys.stdout.flush()
+            time.sleep(0.01)
         # basic attack method
         answer = input().lower()
         if answer == 'a':
@@ -135,16 +120,15 @@ class Player(object):
             print('magic coming soon!')
 
         elif answer == 'i':
-            print('Coming soon!\n')
+            #uses user input to pass into backpack to test to later use to get item value from backpack
+            ivalue = backpack.test(answer)
+
+            #prompts the status change after support item used
+            print(f'{self.name}s hp increased by {ivalue}')
             
-            # print(f'Would you like to use your {hpPotion[0].name}? y/n\n')
-            # usepotion = input()
-
-            # if usepotion.lower() == 'y':
-            #     self.useItem(hpPotion[0])
-            # else:
-            #     pass
-
+            #goes back to battle method after first attack method is called in fight module
+            return ivalue
+            
         elif answer == 'r':
             print('Sorry, coming soon!')
         # elif answer.lower() == 'run':
@@ -162,6 +146,7 @@ class Player(object):
                     time.sleep(0.04)
 
     def levelUp(self):
+        '''changes players stats'''
         self.mainHp += 3
         self.mainMp += 2
         self.hp += 3
@@ -351,16 +336,6 @@ zoneMap = {
         DOWN: '',
         LEFT: 'a13',
         RIGHT: 'a15'
-    },
-    'a15': {
-        ZONENAME: '',
-        DESCRIPTION: 'description',
-        EXAMINATION: 'examine',
-        SOLVED: False,
-        UP: 'a11',
-        DOWN: '',
-        LEFT: 'a14',
-        RIGHT: 'a16'
     },
     'a15': {
         ZONENAME: '',
