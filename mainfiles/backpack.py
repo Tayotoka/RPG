@@ -1,3 +1,4 @@
+"""This module creates, shows, and handles items and container made objects"""
 class item(object):
     def __init__(self, name, value, quantity=1):
         self.name = name
@@ -9,7 +10,6 @@ class item(object):
 
     def recalc(self):
         self.netValue = self.quantity * self.value
-
 
 class container(object):
 
@@ -40,7 +40,6 @@ class container(object):
             raise ValueError('Negative quantity.')  # can use remove() instead
 
         if item in self:
-
             self[item].quantity += quantity  # adds to quantity
             self[item].recalc()
 
@@ -61,52 +60,87 @@ class container(object):
             self[item].quantity -= quantity
             self[item].recalc()
 
-backpack = container('Inventory')
+    def __initBackpack__(self, rucksack): 
+        '''initializes the container backpack with items, once shop is integrated, arguments 
+        will be passed in here to add to back pack'''
+        gold = item('Gold Coin', 1, 50)
+        sword = item('bronze sword', 50, 1)
+        potion = item('potion', 20, 1)
+        rucksack.add(sword)
+        rucksack.add(gold)
+        rucksack.add(potion)
+        # x = rucksack.item_index(rucksack, potion.name)
+        # print(f'this is value x {x}')
+        rucksack.display_Backpack(self, rucksack, gold, sword, potion)
+    
+    def display_Backpack(self, name, rucksack,*items):
+        '''displays container backpacks contents'''
 
-sword = [item('Bronze Sword', 10), item('Iron Sword', 15)]
-gold = item('Gold Coin', 1, 50)
-potion = [item('Crude potion', 5), item('Better Potion', 15)]
+        print("\nThis is your backpack's contents.\n")
+        count = 0
+        #print(f'this is potion value = {items[2].value}')
+        for name, item in rucksack:
+            print(item.name,' x', item.quantity, ' - ', item.value, '\n')
+            count += 1
+        if count == 0:
+            print('You have nothing in the backpack')
+            #del self   #deleting used memory for testing purposes
+        del count
 
-# backpack.add(sword)
-backpack.add(gold)
+    def item_index(self, rucksack, answer):
+        '''creates an inventory dictionary inv {keyvalue = item name and value = item value} 
+        and unpacks the backpack container being sent as rucksack in this method. Takes user 
+        input item name when called to request the value of the item from the backpack container.
+        '''
+        inv = {}
+        
+        for i, j in rucksack:
+            inv[j.name] = j.value
+        
+        print(inv)
+        return inv[answer]
 
+def test(answer = 'none'):
+    '''creates backpack, intializes it, an communicates with other methods to 
+    accept user input to request any status effects to activate upon item use
+    '''
+    print("Testing")
+    #creates backpack object instance out side of class scope and initalizes items in backpack
+    backpack = container('Inventory')
+    backpack.__initBackpack__(backpack)
+    
+    if answer == 'i':
+        #feed back loop for incorrect user input; if input is correct,
+        #then item value for potion is unpacked when item index method is called from container class
+        #and sent to variable ivalue and returned to attack method in chracter module
+        while True:
+            print("\nChoose an item you want to use. You may also type in 'exit' or 'quit' to escape the inventory menu")
+            ans = input().lower()
+            if ans == 'potion':
+                item_value = backpack.item_index(backpack, ans)
+                print(f'You chose support item {ans}.')
+                return item_value
+            elif ans == 'exit' or ans == 'quit':
+                break   
+            else:
+                print(f'\nSorry, {answer} is not a support item.')
 
-# print(sword in backpack)
-# print(gold in backpack)
-# print(potion in backpack)
+    #print(backpack.inside.items())
+    # def purchase(self, backpack, *items):
 
-# print(len(backpack))
+    #     for item in items:
+    #         if item.value > backpack[gold].quantity:
+    #             print("You don't have enough gold!")
+    #             print("""Come back when you have {0}
+    #                 more gold!""".format(item.value - backpack[gold].quantity))
 
-# for name, item in backpack:
-#     print(item.name, item.quantity)
+    #         else:
+    #             backpack.remove(gold, item.value)
+    #             backpack.add(item)
+    #             print('You purchased a {0}'.format(item.name))# text = input('quit?')
+    # # if text == 'yes':
+    # #     exit()
 
-
-def purchase(*items):
-
-    for item in items:
-        if item.value > backpack[gold].quantity:
-            print("You don't have enough gold!")
-            print("""Come back when you have {0}
-                  more gold!""".format(item.value - backpack[gold].quantity))
-
-        else:
-            backpack.remove(gold, item.value)
-            backpack.add(item)
-            print('You purchased a {0}'.format(item.name))
-
-
-def test():
-    while True:
-
-        print(backpack[gold].quantity)
-
-        purchase(sword[0])
-
-        for name, item in backpack:
-            print(f"you have {item.quantity} {item.name}'s")
-        text = input('quit?')
-        if text == 'yes':
-            exit()
-
-if __name__ == '__main__':
-    test()
+# if __name__ == '__main__':
+#     print("im in statement")
+#     test()
