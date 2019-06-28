@@ -124,11 +124,16 @@ class Player(object):
             ivalue = backpack.test(answer)
 
             #prompts the status change after support item used
-            print(f'{self.name}s hp increased by {ivalue}')
-            
+            if ivalue:
+                status = f'{self.name}s hp increased by {ivalue}'
+                for writetime in status:
+                    sys.stdout.write(writetime)
+                    sys.stdout.flush()
+                    time.sleep(0.03)
             #goes back to battle method after first attack method is called in fight module
-            return ivalue
-            
+                return ivalue
+            else: 
+                pass
         elif answer == 'r':
             print('Sorry, coming soon!')
         # elif answer.lower() == 'run':
