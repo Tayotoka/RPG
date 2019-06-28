@@ -9,6 +9,7 @@ from character import Player, zoneMap
 from spawns import (Mob, creatures, mobSpawn)
 from fight import battle
 import backpack
+
 def startScreen():
     print('--------Welcome!-------\n')
     print('What would you like to do?\n')
@@ -108,7 +109,12 @@ def prompt(hero):
         if action == 'quit':
             exit('Thank you for playing!')
         elif action == 'inventory':
-            backpack.test()
+            ivalue = backpack.test()
+            if ivalue:
+                hero.hp += ivalue
+                del ivalue
+            else:
+                del ivalue
         elif action == 'shop':
             # backpack.__initBackpack__()
             # purchase()
