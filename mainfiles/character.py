@@ -8,6 +8,7 @@ import time
 import os
 import backpack 
 
+print(__name__)
 class Player(object):
     """
     Takes player instance, creates player methods
@@ -121,7 +122,7 @@ class Player(object):
 
         elif answer == 'i':
             #uses user input to pass into backpack to test to later use to get item value from backpack
-            ivalue = backpack.test(answer)
+            ivalue = backpack.test(self, answer)
 
             #prompts the status change after support item used
             if ivalue:
@@ -184,12 +185,12 @@ class Player(object):
                 time.sleep(0.04)
 
 # experience
-#df = pd.read_excel('Data/Experience.xlsx', sheet_name='None')
+df = pd.read_excel('Data/Experience.xlsx', sheet_name='None')
 
-#experience = df.values.tolist()  # the packed list
+experience = df.values.tolist()  # the packed list
 expToLevel = []  # the unpacked list
-#for e in experience:
-#    expToLevel.append((*e))  # unpacks list
+for e in experience:
+    expToLevel.append((*e))  # unpacks list
 
 # Character mechanics
 ZONENAME = '',
@@ -1328,3 +1329,4 @@ zoneMap = {
         RIGHT: 'right'
     },
 }
+print("\nim at bottom")

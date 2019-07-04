@@ -9,11 +9,11 @@ screen_width = 100
 
 # ---Player setup---
 
-
+print(__name__)
 class Player:
     def __init__(self, name):
         self.name = name
-        self.location = 'a6'
+        self.location = 'a3'
 hero = Player('Tayotoka')
 
 
@@ -1244,4 +1244,11 @@ zoneMap = {
         RIGHT: 'right'
     },
 }
-prompt()
+#prompt()
+def retrieve_wmdata(answer):
+    if answer == "shop":
+        return zoneMap['a4'][ZONENAME]
+    else:
+        pass
+
+print ("im down here")

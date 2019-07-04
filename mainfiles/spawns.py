@@ -8,7 +8,7 @@ import time
 import os
 from fight import battle
 
-
+print(__name__)
 class Mob(object):
     """
     takes monster stats and player stats
@@ -81,6 +81,6 @@ for i in importedCreatures[0:4]:
     lowLvlMobs.append(Mob(*i))
 for i in importedCreatures[4:6]:
     lowBoss.append(Mob(*i))
-
+print("im down here")
 if __name__ == '__main__':
     mobSpawn(5)

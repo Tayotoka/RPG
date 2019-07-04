@@ -9,6 +9,7 @@ from character import Player, zoneMap
 from spawns import (Mob, creatures, mobSpawn)
 from fight import battle
 import backpack
+import worldMap
 
 def startScreen():
     print('--------Welcome!-------\n')
@@ -75,9 +76,9 @@ def getName():
     welcomeText = f'\nWelcome {hero.name}!\n'
 
     for writetime in welcomeText:
-            sys.stdout.write(writetime)
-            sys.stdout.flush()
-            time.sleep(0.03)
+        sys.stdout.write(writetime)
+        sys.stdout.flush()
+        time.sleep(0.03)
     gameStart(hero)
 ZONENAME = '',
 DESCRIPTION = 'description',
@@ -101,6 +102,7 @@ def prompt(hero):
         outputs players response
         """
         action = input().lower()
+        os.system('cls')
         acceptable_actions = ['move', 'go', 'travel', 'walk', 'quit',
                               'examine', 'inspect', 'explore', 'shop', 'inventory']
         while action not in acceptable_actions:
@@ -109,18 +111,34 @@ def prompt(hero):
         if action == 'quit':
             exit('Thank you for playing!')
         elif action == 'inventory':
-            ivalue = backpack.test()
+            
+            ivalue = backpack.test(hero)
             if ivalue:
                 hero.hp += ivalue
+                stat_up = f'\n{hero.name}s hp increased by {ivalue}.'
+                for writetime in stat_up:
+                    sys.stdout.write(writetime)
+                    sys.stdout.flush()
+                    time.sleep(0.03)
                 del ivalue
             else:
                 del ivalue
         elif action == 'shop':
-            # backpack.__initBackpack__()
-            # purchase()
-            pass
+            
+            print(hero.location)
+            
+            data = worldMap.retrieve_wmdata(hero.location)
+            if data == 'Shop':
+                backpack.test(hero,'yes')
+            else:
+                prompt = f'Please head to your nearest shop location to request the shop option.'
+                for writetime in prompt:
+                    sys.stdout.write(writetime)
+                    sys.stdout.flush()
+                    time.sleep(0.03)
 
         elif action in ['move', 'go', 'travel', 'walk']:
+            print(hero.location)
             Player.playerMove(hero, action)
 
         elif action in ['examine', 'inspect']:
@@ -169,7 +187,7 @@ def explore(hero):
         hero.NeededExp()
         time.sleep(1.5)
         os.system('cls')
-        mainUI(hero)
+        #mainUI(hero)
     else:
         os.system('cls')
         youDied = f'\nYou were killed by the {newMob.name}.\n'
@@ -179,7 +197,7 @@ def explore(hero):
             time.sleep(0.04)
             time.sleep(1)
         os.system('cls')
-        mainUI(hero)
+        #mainUI(hero)
 
 def mainUI(hero):
     """
@@ -207,5 +225,6 @@ def gameStart(hero):
     # this is the battle loop starting point
 
 if __name__ == '__main__':
+    print(__name__)
     startScreen()
     

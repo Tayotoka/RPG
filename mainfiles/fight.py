@@ -5,7 +5,7 @@ import time
 import sys
 import os
 
-
+print(__name__)
 def battle(hero, newMob):
     """
     takes users input to decide battle sequence, does math for stats
@@ -16,11 +16,10 @@ def battle(hero, newMob):
     import backpack 
     
     while hero.hp > 0 and newMob.hp > 0:
-            # willRun = 'run'
-            #executes attack method from player class and stores in variable ivalue
+        #executes attack method from player class and stores in variable ivalue
         ivalue = Player.attack(hero, newMob)
 
-            #if ivalue exists, then increase heros hp attribute and deletes ivalue after its been used
+        #if ivalue exists, then increase heros hp attribute and deletes ivalue after its been used
         if ivalue:
             #status effect implemented from support item
             hero.hp += ivalue
@@ -67,3 +66,4 @@ def magic(hero, newMob):
 # if __name__ == '__main__':
 #     from character import Player
 #     battle(hero, newMob)
+print("im at bottom")

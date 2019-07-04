@@ -1,6 +1,9 @@
 """This module creates, shows, and handles items and container made objects"""
 import sys
 import time
+import os
+
+print(__name__)
 class item(object):
     def __init__(self, name, value, quantity=1):
         self.name = name
@@ -62,24 +65,12 @@ class container(object):
             self[item].quantity -= quantity
             self[item].recalc()
 
-    def __initBackpack__(self, rucksack, item_quantity = 0): 
-        '''initializes the container backpack with items, once shop is integrated, arguments 
-        will be passed in here to add to back pack. Note that the items added to ruck sack must
-         be added everytime this method is called in test.'''
+    def __initBackpack__(self, rucksack, hero, answer = "none"): 
+        '''either sends user to shop and displays backpacks contents, or displays backpacks contents'''
         
-        # for i, j in rucksack:
-            # print(f'this rucksack passed into initBackpack; defined by global scope {j.name, j.value, j.quantity}')
-        # gold = item('Gold Coin', 1, 50)
-        # sword = item('bronze sword', 50, 1)
-        # potion = item('potion', 20, 1)
-        # rucksack.add(sword)
-        # rucksack.add(gold)
-        # rucksack.add(potion)
-        #items = []
-        rucksack = rucksack.purchase(rucksack, gold, sword, potion)
-        print(f'im out  of purchase, here is backpack {rucksack}')
-        # x = rucksack.item_index(rucksack, potion.name)
-        # print(f'this is value x {x}')
+        if answer == 'yes':
+            rucksack = rucksack.purchase(hero, rucksack, gold, sword, potion)
+    
         rucksack.display_Backpack(self, rucksack, gold, sword, potion)
         return rucksack
 
@@ -89,7 +80,6 @@ class container(object):
 
         print("\nThis is your backpack's contents.\n")
         count = 0
-        #print(f'this is potion value = {items[2].value}')
         for name, item in rucksack:
             inbpack = f'{item.name}, x,{item.quantity},  - , {item.value} \n'
             for writetime in inbpack:
@@ -99,7 +89,7 @@ class container(object):
             count += 1
         if count == 0:
             print('You have nothing in the backpack')
-            #del self   #deleting used memory for testing purposes
+        #deleting used memory for testing purposes
         del count
         
 
@@ -114,45 +104,129 @@ class container(object):
         for i, j in rucksack:
             inv[j.name] = j.value
             inv2[j.name] = j.quantity
-        # print(inv)
-        # print(inv2)
-        inventory = [inv, inv2]
-        # invent = f'\nthis is inventory {inventory}\n'
-        # for writetime in invent:
-        #     sys.stdout.write(writetime)
-        #     sys.stdout.flush()
-        #     time.sleep(0.03)
-        return inventory[num][answer]
 
-    def purchase(self, backpack, *items):
-            print(f'\nim in purchase, here is backpack {backpack}\n')
-            return backpack
+        inventory = [inv, inv2]
+        del inv, inv2
+        return inventory[num][answer]
+    def sendshopitems(self, hero):
+        '''takes in players location to confirm shop location and sends a list of items when called 
+        '''
+        if hero.location == 'shop':
+            return ["potion", "bronze sword"]
+        else:
+            pass
+          
+    def purchase(self, hero, backpack, *items ):
+        '''when called the players username is used, the backpack and its contents is used to display shop items and ask user input for item purchase 
+        and deducts necessary gold quantity after confirmation and restricts exceeding gold limit boundaries to purchase any more items and restricts
+        any other item purchase requests other than shops stocked inventory. shop items are also sent here based on the players shop location.
+        '''   
+        stock = backpack.sendshopitems(hero)
+        
+        prompt = f'\n\nHello {hero.name}, welcome to the shop.\n\nHere is our items stocked in the shop:'
+        for writetime in prompt:
+            sys.stdout.write(writetime)
+            sys.stdout.flush()
+            time.sleep(0.03)
+            
+        for i in range(len(stock)):
+            pmt = f'\n\n\t{stock[i]}\t\t10 gold\n\n'
+            for writetime in pmt:
+                sys.stdout.write(writetime)
+                sys.stdout.flush()
+                time.sleep(0.03)
+        del stock
+        while True:
+            stock = backpack.sendshopitems(hero)
+            ans = input("\n\nWould you like to purchase an item? yes or no?\n")
+            os.system('cls')
+            if ans == 'yes':
+                prompt = f'\n\nHello {hero.name}, welcome to the shop.'
+                for writetime in prompt:
+                    sys.stdout.write(writetime)
+                    sys.stdout.flush()
+                    time.sleep(0.03)
+                
+                for i in range(len(stock)):
+                    pmt = f'\n\n\t{stock[i]}\t10 gold\n\n'
+                    for writetime in pmt:
+                        sys.stdout.write(writetime)
+                        sys.stdout.flush()
+                        time.sleep(0.03)
+                del stock
+                ask = input("\n\nPlease type in the item name you would like to purchase.\n")
+                os.system('cls')
+                if ask == 'potion':
+                    
+                    for i, j in backpack:
+                        if j.name == 'Gold Coin': 
+                            if j.quantity >= 10:  
+
+                                for i, j in backpack:
+                                    if j.name == 'potion':
+
+                                        j.quantity += 1
+                                        prompt = f'Thank you for purchasing one {j.name}.'
+                                        for writetime in prompt:
+                                            sys.stdout.write(writetime)
+                                            sys.stdout.flush()
+                                            time.sleep(0.03)
+                                        for k, l in backpack:
+                                            if l.name == 'Gold Coin':
+                                                l.quantity -= 10
+                                                print(f'\nYou have {l.quantity} gold left.\n')
+                                                backpack.display_Backpack(hero, backpack, potion, gold, sword)
+                                                break                               
+                            else:
+                                warning = f'Sorry you do not have enough gold. You currently have {j.quantity} gold.'  
+                                for writetime in warning:
+                                    sys.stdout.write(writetime)
+                                    sys.stdout.flush()
+                                    time.sleep(0.03) 
+                                continue    
+                else:
+                    print(f'\n\nsorry, {ask} is not in the shops inventory.')  
+                    continue      
+            elif ans == 'no':
+                break
+            else:
+                print(f'\n\nsorry, {ans} is not a valid input.')
+                continue
+        
+        return backpack
 #global created objects to manipulate in module backpack
 backpack = container('Inventory')
 gold = item('Gold Coin', 1, 50)
 sword = item('bronze sword', 50, 1)
 potion = item('potion', 20, 1)
 backpack.add(sword)
+backpack.add(potion) 
 backpack.add(gold)
-backpack.add(potion)           
-def test(answer = 'none'):
-    '''creates backpack, intializes it, an communicates with other methods to 
-    accept user input to request any status effects to activate upon item use
+
+
+def test(hero, answer = "none" ):
+    '''reads global created objects and contains multiple calling options to either access the shop, or look at inventory 
+    and request user input for item use in or out of attack phase
     '''
     print("Testing")
 
     global backpack
+    #do i keep initbackpack or delete it to use purchase method?
+    if answer == 'yes':
+        backpack = backpack.__initBackpack__(backpack, hero, answer)
 
-    backpack = backpack.__initBackpack__(backpack)
-    
-    if answer == 'none':
+    if answer == "none":
+        backpack.display_Backpack(hero, backpack, potion, gold, sword)
         while True:
+
             option = "Do you wish to use an item? Yes or No?\n"
             for writetime in option:
                 sys.stdout.write(writetime)
                 sys.stdout.flush()
                 time.sleep(0.03)
             ask = input()
+            os.system('cls')
+            
             if ask == "yes":
                 answer = "i"
                 break
@@ -165,46 +239,46 @@ def test(answer = 'none'):
                     sys.stdout.flush()
                     time.sleep(0.03)
                 
-            
-
     if answer == 'i':
         #feed back loop for incorrect user input; if input is correct,
         #then item value for potion is unpacked when item index method is called from container class
         #and sent to variable ivalue and returned to attack method in character module
         while True:
+
+            backpack.display_Backpack(hero, backpack, potion, sword, gold)
             prompt = "\nChoose an item you want to use. You may also type in 'exit' or 'quit' to escape the inventory menu\n"
             for writetime in prompt:
                 sys.stdout.write(writetime)
                 sys.stdout.flush()
                 time.sleep(0.03)
             ans = input().lower()
+            os.system('cls')
+
             if ans == 'potion':
                 
                 item_value = backpack.item_index(backpack, ans)
+                
                 decision = f'You chose support item {ans}.\n'
                 for writetime in decision:
                     sys.stdout.write(writetime)
                     sys.stdout.flush()
                     time.sleep(0.03)
                 potion_quantity = backpack.item_index(backpack, ans, 1)
-                #print(f'i am potion quantity before use {potion_quantity}')
                 
                 if potion_quantity > 0:
-                    
-                    #print('im here')
+                
                     for i, j in backpack:
-                        print(f'Im in tuple {j.name}\n')
                         if j.name == 'potion':
-                            #print(f'this is potion quantity before removal {j.quantity}')
                             j.quantity -= 1
-                            #print(f'this is potion quantity after removal {j.quantity}')
-                    # for i, j in backpack:
-                    #         print(f'this is backpack after potion quantity removal{j.name, j.value, j.quantity}')
-                    #potion quantity is decreased in test- success!
+                            update = f'\npotion x{j.quantity} - {j.value}.\n'
+                            for writetime in update:
+                                sys.stdout.write(writetime)
+                                sys.stdout.flush()
+                                time.sleep(0.03) 
                 else:
                     potion_quantity = 0 
                     item_value = 0
-                    reminder = f'You have {potion_quantity} potions. \nYour hp has increased by {item_value}.\n'
+                    reminder = f'You have {potion_quantity} potions.\n'
                     for writetime in reminder:
                         sys.stdout.write(writetime)
                         sys.stdout.flush()
@@ -213,29 +287,11 @@ def test(answer = 'none'):
             elif ans == 'exit' or ans == 'quit':
                 break   
             else:
-                warning = f'\nSorry, {answer} is not a support item.\n'
+                warning = f'\nSorry, {ans} is not a support item.\n'
                 for writetime in warning:
                     sys.stdout.write(writetime)
                     sys.stdout.flush()
                     time.sleep(0.03)
     else: 
         pass               
-    #print(backpack.inside.items())
-    
-
-        # for item in items:
-        #     if item.value > backpack[gold].quantity:
-        #         print("You don't have enough gold!")
-        #         print("""Come back when you have {0}
-        #             more gold!""".format(item.value - backpack[gold].quantity))
-
-        #     else:
-        #         backpack.remove(gold, item.value)
-        #         backpack.add(item)
-        #         print('You purchased a {0}'.format(item.name))# text = input('quit?')
-    # if text == 'yes':
-    #     exit()
-
-# if __name__ == '__main__':
-#     print("im in statement")
-#     test()
+print("\nread all")
